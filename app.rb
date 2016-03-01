@@ -25,7 +25,7 @@ class Upload
     @p        = JSON.parse(params)
 
     Net::FTP.open( @p['host'], @p['user'], @p['password'] ) do |ftp|
-      ftp.put file_path, File.basename(file_path)
+      ftp.put file_path, @p['path']
     end
   end
 end
