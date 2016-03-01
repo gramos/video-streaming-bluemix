@@ -1,0 +1,27 @@
+https://console.ng.bluemix.net/catalog
+https://console.ng.bluemix.net/catalog/services/ustream/
+
+Bluemix and video streaming
+---------------------------
+
+The idea of this article is trying to deploy an app in Bluemix
+to stream videos, looking at the Bluemix services page I found
+the ustream services where you can get a free account to publish
+up to 10GB of videos.
+
+https://console.ng.bluemix.net/catalog/services/ustream/
+
+I downloaded and installed the cf client, then created a Bluemix account
+and login against the bluemix cf api. Like the  documentation says I created
+the ustream service and then  I started writting a tiny cuba app with form
+to upload a video and then try to login against ustream api using the ruby oauth2
+library but I coudnt make it work it always raise this error:
+
+{"error":"invalid_request"}
+
+without any other information or detail, and the time box assigned for this end.
+
+https://console.ng.bluemix.net/docs/services/ustream/index.html
+https://ibmcloud.ustream.tv/dashboard/api
+
+https://github.com/intridea/oauth2

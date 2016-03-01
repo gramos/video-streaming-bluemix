@@ -1,0 +1,26 @@
+% if app.req.params['access_token']
+  <h1>Upload video</h1>
+
+  <form method="post" enctype="multipart/form-data" action="/">
+    <fieldset>
+      <input name="video[access_token]" type="hidden" value="{{app.req.params['access_token']}}">
+
+      <input name="video[file]" type="file">
+
+      <br />
+      <label>Title </label>
+      <input name="video[title]" type="text">
+
+      <br />
+      <label>Description </label>
+      <input name="video[description]" type="text">
+
+      </br>
+      <button type="submit">Upload</button>
+    </fieldset>
+  </form>
+% else
+
+  <h1>You should login agains ustream</h1>
+  <a href="http://www.ustream.tv/oauth2/authorize?client_id={{client_id}}&redirect_uri={{redirect_uri}}&response_type=token">[ Login using Ustream ]</a>
+% end
