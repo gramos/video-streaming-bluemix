@@ -13,7 +13,17 @@ and login against the bluemix cf api. Like the  documentation says I created
 the ustream service and then and I bound it to our ruby example app
 that I named video-demo.
 
-1- Make an http reuqest saying that you want to upload a new video:
+you can visit an try the app here:
+
+http://video-demo.mybluemix.net/
+
+The app is very simple and it does this:
+
+You should load a video file from your computer and fill the form
+with title and channel then the video is uploaded to ustream in the
+following way:
+
+1- Make an http request saying that you want to upload a new video:
 
 ```POST https://api.ustream.tv/channels/CHANNEL_ID/uploads.json?type=videoupload-ftp (format can be json or xml)```
 
@@ -25,7 +35,9 @@ in the response to that request we will get the data to upload the video via FTP
 
 ```PUT Uhttps://api.ustream.tv/channels/CHANNEL_ID/uploads/VIDEO_ID.json (format can be json or xml)```
 
-you can read the docs here: https://ibmcloud.ustream.tv/dashboard/api#APIFeaturesUploadVideos
+these steps are descripted in the documentation here:
+
+https://ibmcloud.ustream.tv/dashboard/api#APIFeaturesUploadVideos
 
 
 Install and run the app
