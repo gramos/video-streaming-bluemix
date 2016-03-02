@@ -1,21 +1,30 @@
 % if app.req.session[:access_token]
   <h1>Upload video</h1>
 
+  <form method="post" action="/logout">
+    <button type="submit">Logout</button>
+  </form><br/>
+
   <form method="post" enctype="multipart/form-data" action="/">
+
     <fieldset>
       <input name="video[access_token]" type="hidden" value="{{app.req.params['access_token']}}">
 
       <input name="video[file]" type="file">
 
-      <br />
-      <label>Title </label>
+      <br /><br />
+      <label>You channel Id </label><br />
+      <input name="video[channel_id]" type="text">
+
+      <br /><br />
+      <label>Title </label><br />
       <input name="video[title]" type="text">
 
       <br />
-      <label>Description </label>
+      <label>Description </label><br />
       <input name="video[description]" type="text">
 
-      </br>
+      <br /><br />
       <button type="submit">Upload</button>
     </fieldset>
   </form>

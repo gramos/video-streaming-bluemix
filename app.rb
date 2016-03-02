@@ -62,8 +62,13 @@ class Upload
 end
 
 Cuba.define do
-  on root do
 
+  on post, 'logout' do
+    req.session.delete(:access_token)
+    render 'index', client_id: ENV['CLIENT_ID'], redirect_uri: ENV['REDIRECT_URL']
+  end
+
+  on root do
     on get do
       puts req.session.inspect
 
@@ -71,7 +76,6 @@ Cuba.define do
         req.session[:access_token] = req.params['access_token']
       end
 
-      puts req.session.inspect
       render 'index', client_id: ENV['CLIENT_ID'], redirect_uri: ENV['REDIRECT_URL']
     end
 
@@ -81,7 +85,6 @@ Cuba.define do
         upload    = Upload.new video['access_token']
         upload.make! file_path, req['video']['title']
       end
-
     end
   end
 end
