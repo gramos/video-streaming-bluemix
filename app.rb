@@ -21,12 +21,46 @@ require 'net/ftp'
 class Upload
   attr_reader :p
 
-  def initialize(params, file_path)
-    @p        = JSON.parse(params)
+  def initialize(access_token)
+    @access_token = access_token
+  end
+
+  def make!(file, title)
+    @file = file
+    @title     = title
+
+    request = make_request 'uploads.json?type=videoupload-ftp', Net::HTTP::Post
+    @p      = JSON.parse(request.body)
 
     Net::FTP.open( @p['host'], @p['user'], @p['password'] ) do |ftp|
-      ftp.put file_path, @p['path']
+      ftp.debug_mode = true
+      ftp.binary     = true
+      ftp.putbinaryfile @file, @p['path'], 1024 do
+        @file.read(1024)
+      end
     end
+
+    puts @p['url']
+    #make_request "uploads/#{@p['videoId']}.json", Net::HTTP::Put
+  end
+
+  def make_request(path, method)
+    uri_str = "https://api.ustream.tv/channels/22083914/#{path}"
+
+    uri               = URI.parse uri_str
+    https             = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl     = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request  = method.new uri, {'Authorization' => "Bearer #{@access_token}"}
+
+    if method == Net::HTTP::Put
+      request.set_form_data({"status" => "ready"})
+    else
+      request.set_form_data({"title" => @title})
+    end
+
+    response = https.request(request)
   end
 end
 
@@ -39,35 +73,9 @@ Cuba.define do
 
     on post do
       on param('video') do |video|
-        uri_str = 'https://api.ustream.tv/channels/22083914/uploads.json?type=videoupload-ftp'
-
-        uri               = URI.parse uri_str
-        https             = Net::HTTP.new(uri.host, uri.port)
-        https.use_ssl     = true
-        https.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Post.new uri,
-                                  {'Authorization' => "Bearer #{video['access_token']}"}
-
-        request.set_form_data({"title" => "quentin"})
-        response = https.request(request)
-
-        upload = Upload.new response.body, req['video']['file'][:tempfile].path
-
-        uri_str = "https://api.ustream.tv/channels/22083914/uploads/#{upload.p['videoId']}.json"
-
-        uri               = URI.parse uri_str
-        https             = Net::HTTP.new(uri.host, uri.port)
-        https.use_ssl     = true
-        https.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Put.new uri,
-                                  {'Authorization' => "Bearer #{video['access_token']}"}
-
-        request.set_form_data({"status" => "ready"})
-        response = https.request(request)
-        puts upload.p['videoId'].inspect
-        puts response.inspect
+        file_path = req['video']['file'][:tempfile] #.path
+        upload    = Upload.new video['access_token']
+        upload.make! file_path, req['video']['title']
       end
 
     end
