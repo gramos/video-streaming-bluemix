@@ -7,6 +7,7 @@ require 'json'
 require 'net/ftp'
 
 Cuba.plugin Mote::Render
+Cuba.use Rack::Session::Cookie, :secret => "__a_very_long_string__"
 
 # ----------------------------------------------------------------
 # Load settings and config var in ENV.
@@ -64,6 +65,13 @@ Cuba.define do
   on root do
 
     on get do
+      puts req.session.inspect
+
+      if req.params['access_token']
+        req.session[:access_token] = req.params['access_token']
+      end
+
+      puts req.session.inspect
       render 'index', client_id: ENV['CLIENT_ID'], redirect_uri: ENV['REDIRECT_URL']
     end
 
