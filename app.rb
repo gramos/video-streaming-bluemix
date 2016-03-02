@@ -4,6 +4,7 @@ require 'mote/render'
 require 'net/http'
 require 'net/https'
 require 'json'
+require 'net/ftp'
 
 Cuba.plugin Mote::Render
 
@@ -16,8 +17,6 @@ module Settings
   end
 end
 
-require 'net/ftp'
-
 class Upload
   attr_reader :p
 
@@ -26,18 +25,15 @@ class Upload
   end
 
   def make!(file, title)
-    @file = file
-    @title     = title
+    @file  = file
+    @title = title
 
     request = make_request 'uploads.json?type=videoupload-ftp', Net::HTTP::Post
     @p      = JSON.parse(request.body)
 
     Net::FTP.open( @p['host'], @p['user'], @p['password'] ) do |ftp|
       ftp.debug_mode = true
-      ftp.binary     = true
-      ftp.putbinaryfile @file, @p['path'], 1024 do
-        @file.read(1024)
-      end
+      ftp.putbinaryfile @file, @p['path']
     end
 
     puts @p['url']

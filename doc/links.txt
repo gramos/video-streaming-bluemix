@@ -1,6 +1,11 @@
 https://console.ng.bluemix.net/catalog
 https://console.ng.bluemix.net/catalog/services/ustream/
 
+Ver la queue de videos
+----------------------
+
+https://www.ustream.tv/dashboard/manage-show/videos/upload
+
 Bluemix and video streaming
 ---------------------------
 
