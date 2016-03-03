@@ -10,6 +10,8 @@ https://console.ng.bluemix.net/catalog/services/ustream/
 
 Basically we will cover 3 main topics among the writing:
 
+* Create cuba application.
+
 * Login in ustream API (oauth2) using ruby.
 
 * Upload a video file using the ustream flow ( http - ftp ).
@@ -17,6 +19,36 @@ Basically we will cover 3 main topics among the writing:
 * Deploy the app into bluemix.
 
 So let's put the hands in the thing.
+
+Create cuba aplication.
+----------------------
+
+Im going to use the [cuba](https://github.com/soveran/cuba) framework everytime I can choose, so for this
+let's create a some files to start an empty cuba app.
+
+we need basically 2 files to start, app.rb and config.ru, then
+Ill create a dir to place the views call it views/ of course.
+
+```shell
+emacs app.rb
+```
+
+```ruby
+require 'cuba'
+require 'mote'
+require 'mote/render'
+
+Cuba.plugin Mote::Render
+
+Cuba.define do
+  on root do
+  end
+end
+```
+
+```shell
+mkdir views/
+```
 
 Login in ustream API (oauth2) using ruby
 ----------------------------------------
@@ -88,9 +120,8 @@ Conclution:
 Bluemix play well for this simple app, but the documentation related to integration
 between bluemix and ustream is a bit confusing and is not easy to find what you are looking for. The process of upload a video with http + ftp requires using ftp which is a very old and unused protocol and the error messages of the API are not explanatory.
 
-Install and run the app
+How install and run the app
 =======================
-
 
 Clone the repo
 --------------
